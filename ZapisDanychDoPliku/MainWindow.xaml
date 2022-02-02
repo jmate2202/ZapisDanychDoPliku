@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZapisDanychDoPliku"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Kryminlani" Height="450" Width="400">
+    <Grid Background="Black">
+        <Label Foreground="White" 
+               FontSize="30" 
+               HorizontalAlignment="Center">Wydział Kryminalny</Label>
+        <StackPanel VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+            <Label Foreground="White" 
+                   FontSize="20">Imie nazwisko:</Label>
+            <TextBox FontSize="20"></TextBox>
+            <Label Foreground="White"
+                FontSize="20">Wiek:</Label>
+            <TextBox FontSize="20" Width="300"></TextBox>
+            <Button FontSize="20" 
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    Width="100"
+                    Click="BT_Dodaj_Click">Dodaj</Button>
+        </StackPanel>
 
     </Grid>
 </Window>

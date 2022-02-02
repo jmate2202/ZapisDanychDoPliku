@@ -24,5 +24,10 @@ namespace ZapisDanychDoPliku
         {
             InitializeComponent();
         }
+
+        private void BT_Dodaj_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
