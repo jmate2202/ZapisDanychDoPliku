@@ -156,8 +156,7 @@ namespace ZapisDanychDoPliku
 
         private void BT_Usun_Click(object sender, RoutedEventArgs e)
         {
-            var osoba = DG_dane.SelectedItem as Osoba;
-            MessageBox.Show(osoba.ImieNazwisko);
+            var osoba = DG_dane.SelectedItem as Osoba;           
             UsunDaneZPliku(osoba);
         }
 
@@ -168,6 +167,35 @@ namespace ZapisDanychDoPliku
             File.WriteAllText("dane1.txt", string.Empty);
             osoby.ForEach(x => DodajDoPliku(x, "dane1.txt"));            
             ZaladujDane();
+        }
+
+        private void BT_Edycja_Click(object sender, RoutedEventArgs e)
+        {
+            var osoba = DG_dane.SelectedItem as Osoba;
+            EdycjaDanych(osoba);
+        }
+
+        private void EdycjaDanych(Osoba osoba)
+        {
+            WyczcyscFormularz();
+            TB_ImieNazwisko.Text = osoba.ImieNazwisko;
+            TB_Wiek.Text = osoba.Wiek.ToString();
+            UsunDaneZPliku(osoba);
+            BT_Akcja.Content = "Edytuj";
+            BT_Akcja.Click -= BT_Dodaj_Click;
+            BT_Akcja.Click += EdytujDoPliku;
+        }
+
+        private void EdytujDoPliku(object sender, RoutedEventArgs e)
+        {
+            var osoba = PobierzDaneZFormularza();            
+            DodajDoPliku(osoba, "dane1.txt");
+            ZaladujDane();
+            WyczcyscFormularz();
+            BT_Akcja.Content = "Dodaj";
+            BT_Akcja.Click -= EdytujDoPliku;
+            BT_Akcja.Click += BT_Dodaj_Click;
+
         }
     }
 }

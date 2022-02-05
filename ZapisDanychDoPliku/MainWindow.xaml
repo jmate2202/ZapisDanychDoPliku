@@ -27,7 +27,8 @@
                 <Label Foreground="White"
                 FontSize="20">Wiek:</Label>
                 <TextBox x:Name="TB_Wiek" FontSize="20" Width="300"></TextBox>
-                <Button FontSize="20" 
+                <Button x:Name="BT_Akcja"
+                    FontSize="20" 
                     Margin="10"
                     HorizontalAlignment="Right"
                     Width="100"
@@ -52,7 +53,7 @@
                     <DataGridTemplateColumn Header="Edycja" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Edycja"/>
+                                <Button Content="Edycja" Click="BT_Edycja_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -65,11 +66,9 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Orientation="Horizontal">
-                <Button Width="100" 
-                        Margin="10" 
-                        FontSize="20" >Dodaj</Button>
-                <Button Width="100" 
+            <StackPanel Orientation="Horizontal">               
+                <Button 
+                        Width="100" 
                         Margin="10" 
                         FontSize="20" 
                         Click="BT_Restet_Click">Reset</Button>
