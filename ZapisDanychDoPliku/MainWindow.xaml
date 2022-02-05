@@ -59,7 +59,7 @@
                     <DataGridTemplateColumn Header="Usuń" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Usuń"/>
+                                <Button Content="Usuń" Click="BT_Usun_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

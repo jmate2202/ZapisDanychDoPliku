@@ -83,7 +83,7 @@ namespace ZapisDanychDoPliku
             return $"start\n{osoba.ImieNazwisko}\n{osoba.Wiek}\nend";
         }
 
-        private ICollection<Osoba> WczytajDaneZPliku(string pathFile)
+        private List<Osoba> WczytajDaneZPliku(string pathFile)
         {
             StreamReader sr = new StreamReader(pathFile);
             List<Osoba> osoby = new List<Osoba>();
@@ -102,7 +102,7 @@ namespace ZapisDanychDoPliku
 
         }
         private void ZaladujDane()
-        {
+        {            
             var dane = WczytajDaneZPliku("dane1.txt");
             DG_dane.ItemsSource = dane;
 
@@ -151,6 +151,22 @@ namespace ZapisDanychDoPliku
             };
             osoby.ForEach(x=> DodajDoPliku(x, "dane1.txt"));
             WyczcyscFormularz();
+            ZaladujDane();
+        }
+
+        private void BT_Usun_Click(object sender, RoutedEventArgs e)
+        {
+            var osoba = DG_dane.SelectedItem as Osoba;
+            MessageBox.Show(osoba.ImieNazwisko);
+            UsunDaneZPliku(osoba);
+        }
+
+        private void UsunDaneZPliku(Osoba osoba)
+        {
+            var osoby = WczytajDaneZPliku("dane1.txt");            
+            osoby.RemoveAll(a => a.ImieNazwisko == osoba.ImieNazwisko && a.Wiek == osoba.Wiek);
+            File.WriteAllText("dane1.txt", string.Empty);
+            osoby.ForEach(x => DodajDoPliku(x, "dane1.txt"));            
             ZaladujDane();
         }
     }
