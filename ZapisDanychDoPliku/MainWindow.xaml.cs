@@ -24,17 +24,19 @@ namespace ZapisDanychDoPliku
         public MainWindow()
         {
             InitializeComponent();
+            ZaladujDane();
         }
 
         private void BT_Dodaj_Click(object sender, RoutedEventArgs e)
         {
-            Osoba osoba=PobierzDaneZFormularza();
-            if(osoba != null)
+            Osoba osoba = PobierzDaneZFormularza();
+            if (osoba != null)
             {
                 DodajDoPliku(osoba, "dane1.txt");
                 WyczcyscFormularz();
+                ZaladujDane();
             }
-          
+
         }
 
         private void WyczcyscFormularz()
@@ -44,7 +46,7 @@ namespace ZapisDanychDoPliku
         }
 
         private Osoba PobierzDaneZFormularza()
-        {            
+        {
             try
             {
                 string imieNazwisko = TB_ImieNazwisko.Text;
@@ -60,16 +62,16 @@ namespace ZapisDanychDoPliku
             {
                 MessageBox.Show("bledne dane");
             }
-            return null;          
-            
+            return null;
+
         }
 
-        private void DodajDoPliku(Osoba dane,string sciezkaDoPliku)
+        private void DodajDoPliku(Osoba dane, string sciezkaDoPliku)
         {
             StreamWriter sw = File.AppendText(sciezkaDoPliku);
             string liniaDanych = KonwertujDaneDoCSV(dane);
             sw.WriteLine(liniaDanych);
-            sw.Close();    
+            sw.Close();
         }
 
         private string KonwertujDaneDoCSV(Osoba osoba)
@@ -80,10 +82,76 @@ namespace ZapisDanychDoPliku
         {
             return $"start\n{osoba.ImieNazwisko}\n{osoba.Wiek}\nend";
         }
+
+        private ICollection<Osoba> WczytajDaneZPliku(string pathFile)
+        {
+            StreamReader sr = new StreamReader(pathFile);
+            List<Osoba> osoby = new List<Osoba>();
+            var text = sr.ReadToEnd();
+            var linie = text.Split("\r\n");
+            foreach (var x in linie)
+            {
+                if (x != string.Empty)
+                {
+                    var dane = x.Split(",");
+                    osoby.Add(new Osoba() { ImieNazwisko = dane[0], Wiek = int.Parse(dane[1]) });
+                }
+            }
+            sr.Close();
+            return osoby;
+
+        }
+        private void ZaladujDane()
+        {
+            var dane = WczytajDaneZPliku("dane1.txt");
+            DG_dane.ItemsSource = dane;
+
+        }
         public class Osoba
         {
             public string ImieNazwisko { get; set; }
             public int Wiek { get; set; }
+        }
+
+        private void BT_Restet_Click(object sender, RoutedEventArgs e)
+        {
+            File.WriteAllText("dane1.txt", string.Empty);
+            List<Osoba> osoby = new List<Osoba>()
+            {
+                new Osoba()
+                {
+                    ImieNazwisko="Jan Kowalski",
+                    Wiek=30
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Adam Nowak",
+                    Wiek=20
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Piotr Prank",
+                    Wiek=35
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Dorian Kran",
+                    Wiek=27
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Aldona Zbieg",
+                    Wiek=33
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Krystian Klon",
+                    Wiek=39
+                },
+            };
+            osoby.ForEach(x=> DodajDoPliku(x, "dane1.txt"));
+            WyczcyscFormularz();
+            ZaladujDane();
         }
     }
 }
