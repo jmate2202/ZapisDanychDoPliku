@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,8 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZapisDanychDoPliku.Models;
-using ZapisDanychDoPliku.Services;
 
 namespace ZapisDanychDoPliku
 {
@@ -25,20 +21,18 @@ namespace ZapisDanychDoPliku
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IOsobaService _osobaService;
         public MainWindow()
         {
             InitializeComponent();
-            _osobaService = new OsobaService();
             ZaladujDane();
         }
 
         private void BT_Dodaj_Click(object sender, RoutedEventArgs e)
         {
-            OsobaDTO osoba = PobierzDaneZFormularza();
+            Osoba osoba = PobierzDaneZFormularza();
             if (osoba != null)
             {
-                _osobaService.StworzOsobe(osoba);
+                DodajDoPliku(osoba, "dane1.txt");
                 WyczcyscFormularz();
                 ZaladujDane();
             }
@@ -51,13 +45,13 @@ namespace ZapisDanychDoPliku
             TB_Wiek.Text = string.Empty;
         }
 
-        private OsobaDTO PobierzDaneZFormularza()
+        private Osoba PobierzDaneZFormularza()
         {
             try
             {
                 string imieNazwisko = TB_ImieNazwisko.Text;
                 int wiek = int.Parse(TB_Wiek.Text);
-                OsobaDTO o = new OsobaDTO
+                Osoba o = new Osoba
                 {
                     ImieNazwisko = imieNazwisko,
                     Wiek = wiek
@@ -71,67 +65,109 @@ namespace ZapisDanychDoPliku
             return null;
 
         }
-       
-        private void ZaladujDane()
-        {           
-            DG_dane.ItemsSource = null;
-            DG_dane.ItemsSource = _osobaService.GetOsoby();      
+
+        private void DodajDoPliku(Osoba dane, string sciezkaDoPliku)
+        {
+            StreamWriter sw = File.AppendText(sciezkaDoPliku);
+            string liniaDanych = KonwertujDaneDoCSV(dane);
+            sw.WriteLine(liniaDanych);
+            sw.Close();
         }
-     
+
+        private string KonwertujDaneDoCSV(Osoba osoba)
+        {
+            return $"{osoba.ImieNazwisko},{osoba.Wiek}";
+        }
+        private string KonwertujDaneDoMojegoFormatu(Osoba osoba)
+        {
+            return $"start\n{osoba.ImieNazwisko}\n{osoba.Wiek}\nend";
+        }
+
+        private List<Osoba> WczytajDaneZPliku(string pathFile)
+        {
+            StreamReader sr = new StreamReader(pathFile);
+            List<Osoba> osoby = new List<Osoba>();
+            var text = sr.ReadToEnd();
+            var linie = text.Split("\r\n");
+            foreach (var x in linie)
+            {
+                if (x != string.Empty)
+                {
+                    var dane = x.Split(",");
+                    osoby.Add(new Osoba() { ImieNazwisko = dane[0], Wiek = int.Parse(dane[1]) });
+                }
+            }
+            sr.Close();
+            return osoby;
+
+        }
+        private void ZaladujDane()
+        {            
+            var dane = WczytajDaneZPliku("dane1.txt");
+            DG_dane.ItemsSource = dane;
+
+        }
+        public class Osoba
+        {
+            public string ImieNazwisko { get; set; }
+            public int Wiek { get; set; }
+        }
 
         private void BT_Restet_Click(object sender, RoutedEventArgs e)
         {
-            _osobaService.ResetDanych();        
+            File.WriteAllText("dane1.txt", string.Empty);
+            List<Osoba> osoby = new List<Osoba>()
+            {
+                new Osoba()
+                {
+                    ImieNazwisko="Jan Kowalski",
+                    Wiek=30
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Adam Nowak",
+                    Wiek=20
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Piotr Prank",
+                    Wiek=35
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Dorian Kran",
+                    Wiek=27
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Aldona Zbieg",
+                    Wiek=33
+                },
+                new Osoba()
+                {
+                    ImieNazwisko="Krystian Klon",
+                    Wiek=39
+                },
+            };
+            osoby.ForEach(x=> DodajDoPliku(x, "dane1.txt"));
             WyczcyscFormularz();
             ZaladujDane();
-            
         }
 
         private void BT_Usun_Click(object sender, RoutedEventArgs e)
         {
-            var osoba = DG_dane.SelectedItem as OsobaDTO;
-            var rezultat=_osobaService.UsunOsobe(osoba.Id);
-            if (!rezultat) MessageBox.Show("blad usuniecia");
+            var osoba = DG_dane.SelectedItem as Osoba;
+            MessageBox.Show(osoba.ImieNazwisko);
+            UsunDaneZPliku(osoba);
+        }
+
+        private void UsunDaneZPliku(Osoba osoba)
+        {
+            var osoby = WczytajDaneZPliku("dane1.txt");            
+            osoby.RemoveAll(a => a.ImieNazwisko == osoba.ImieNazwisko && a.Wiek == osoba.Wiek);
+            File.WriteAllText("dane1.txt", string.Empty);
+            osoby.ForEach(x => DodajDoPliku(x, "dane1.txt"));            
             ZaladujDane();
-        }
-
-
-        int _id;
-        private void BT_Edycja_Click(object sender, RoutedEventArgs e)
-        {
-            var osoba = DG_dane.SelectedItem as OsobaDTO;
-            _id = osoba.Id;
-            EdycjaDanych(osoba);
-        }
-
-        private void EdycjaDanych(OsobaDTO osoba)
-        {
-            WyczcyscFormularz();
-            TB_ImieNazwisko.Text = osoba.ImieNazwisko;
-            TB_Wiek.Text = osoba.Wiek.ToString();            
-            BT_Akcja.Content = "Edytuj";
-            BT_Akcja.Click -= BT_Dodaj_Click;
-            BT_Akcja.Click += EdytujDoPliku;
-        }
-
-        private void EdytujDoPliku(object sender, RoutedEventArgs e)
-        {
-            var osoba = PobierzDaneZFormularza();
-            var rezultat=_osobaService.AktualizujOsobe(_id, osoba);
-            if (!rezultat) MessageBox.Show("blad edycji");
-            ZaladujDane();
-            WyczcyscFormularz();
-            BT_Akcja.Content = "Dodaj";
-            BT_Akcja.Click -= EdytujDoPliku;
-            BT_Akcja.Click += BT_Dodaj_Click;
-
-        }
-
-        private void ValidationTextBoxOnlyNumber(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");           
-            e.Handled=regex.IsMatch(e.Text);     
-           
         }
     }
 }
