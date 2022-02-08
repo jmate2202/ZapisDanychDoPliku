@@ -16,6 +16,7 @@ namespace ZapisDanychDoPliku
         {
             InitializeComponent();
             daneContext = new DaneContext();
+            Okno.Content = new MainPage();
         }
 
      

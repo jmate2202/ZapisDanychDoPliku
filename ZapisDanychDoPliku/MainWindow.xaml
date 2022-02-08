@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Kryminlani" Height="700" Width="800">
     <Grid>
-        <Frame x:Name="Okno" Margin="0 0 0 100"></Frame>
+        <Frame x:Name="Okno" Margin="0 0 0 100" ></Frame>
         <StackPanel VerticalAlignment="Bottom" 
                     Orientation="Horizontal">
             <Button Content="Uczniowie"              
