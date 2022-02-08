@@ -8,7 +8,82 @@
       d:DesignHeight="600" d:DesignWidth="800"
       Title="LekcjaPage">
 
-    <Grid>
-        <Label>Prowadzenie lekcji</Label>
+    <Grid Background="Black">
+        <Label Foreground="White" 
+               FontSize="30" 
+               HorizontalAlignment="Center">Prowadzenie lekcji</Label>
+        <Grid Margin="0 50 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="10">
+                <Label 
+               x:Name="L_NazwaAkcji"
+               Foreground="White" 
+               FontSize="30" 
+               HorizontalAlignment="Center">Dane lekcji</Label>
+                <StackPanel VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+                    <Label Foreground="White" 
+                   FontSize="20">Temat</Label>
+                    <TextBox x:Name="TB_Temat"
+                         FontSize="20"
+                         MaxLength="40"></TextBox>
+                    <Label Foreground="White"
+                FontSize="20">Wybór klasy:</Label>
+                    <ComboBox x:Name="CB_klasa"
+                              FontSize="20"
+                              Width="200"
+                              SelectionChanged="CB_KlasaWybor_Click"
+                              >
+                        <ComboBoxItem Content="1BT"></ComboBoxItem>
+                        <ComboBoxItem Content="2BT"></ComboBoxItem>
+                        <ComboBoxItem Content="3BT"></ComboBoxItem>                       
+                    </ComboBox>
+                    <Button x:Name="BT_Akcja"
+                    FontSize="20" 
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    Width="100"
+                    Click="BT_DodajLekcje_Click">Zatwierdź</Button>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="10">
+                <Label Foreground="White" 
+               FontSize="30" 
+               HorizontalAlignment="Center">Lista obecnosci</Label>
+                <DataGrid x:Name="DG_dane"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      MaxHeight="400"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      FontSize="20"
+                      AutoGenerateColumns="False" CanUserAddRows="False"
+                      >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="auto" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Imie" Width="auto" Binding="{Binding Imie}"/>
+                        <DataGridTextColumn Header="Nazwisko" Width="auto" Binding="{Binding Nazwisko}"/>                        
+                        <DataGridTemplateColumn Header="O" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="Obecnosc" Click="BT_Obecnosc_Click"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>                        
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal">
+                    <Button 
+                        Width="100" 
+                        Margin="10" 
+                        FontSize="20" 
+                        Click="BT_Restet_Click">Reset</Button>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Page>

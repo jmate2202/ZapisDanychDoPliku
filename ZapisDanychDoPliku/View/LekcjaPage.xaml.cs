@@ -24,5 +24,30 @@ namespace ZapisDanychDoPliku.View
         {
             InitializeComponent();
         }
+
+        private void BT_DodajLekcje_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BT_Restet_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BT_Obecnosc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CB_KlasaWybor_Click(object sender, RoutedEventArgs e)
+        {
+            if (CB_klasa.SelectedItem != null)
+            {
+                var item = CB_klasa.SelectedItem as ComboBoxItem;
+                var klasa = item.Content.ToString();
+                MessageBox.Show(klasa);
+            }
+        }
     }
 }
