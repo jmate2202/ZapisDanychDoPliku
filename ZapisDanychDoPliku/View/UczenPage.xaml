@@ -6,9 +6,95 @@
       xmlns:local="clr-namespace:ZapisDanychDoPliku.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="UczenPage">
+      Title="Uczniowie">
 
     <Grid>
-        <Label>test</Label>
+        <Grid Background="Black">
+            <Label Foreground="White" 
+               FontSize="30" 
+               HorizontalAlignment="Center">Uczniowie</Label>
+            <Grid Margin="0 50 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="10">
+                    <Label x:Name="L_NazwaAkcji"
+                        Foreground="White" 
+                        FontSize="30" 
+                        HorizontalAlignment="Center">Dodaj</Label>
+                    <StackPanel VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+                        <Label Foreground="White" 
+                   FontSize="20">Imie:</Label>
+                        <TextBox x:Name="TB_Imie"
+                         FontSize="20"
+                         MaxLength="40"></TextBox>
+                        <Label Foreground="White" 
+                   FontSize="20">Nazwisko:</Label>
+                        <TextBox x:Name="TB_Nazwisko"
+                         FontSize="20"
+                         MaxLength="40"></TextBox>
+                        <Label Foreground="White"
+                FontSize="20">Klasa:</Label>
+                        <TextBox x:Name="TB_Klasa" 
+                         FontSize="20" 
+                         Width="300"
+                         MaxLength="3"
+                         >
+                        </TextBox>
+                        <Button x:Name="BT_Akcja"
+                    FontSize="20" 
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    Width="100"
+                    Click="BT_Dodaj_Click">Dodaj</Button>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="10">
+                    <Label Foreground="White" 
+               FontSize="30" 
+               HorizontalAlignment="Center">Przeglądaj</Label>
+                    <DataGrid x:Name="DG_dane"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      MaxHeight="400"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      FontSize="20"
+                      AutoGenerateColumns="False" CanUserAddRows="False"
+                      >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Width="auto" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Imie" Width="auto" Binding="{Binding Imie}"/>
+                            <DataGridTextColumn Header="Nazwisko" Width="auto" Binding="{Binding Nazwisko}"/>
+                            <DataGridTextColumn Header="Klasa" Width="auto" Binding="{Binding Klasa}"/>
+                            <DataGridTemplateColumn Header="Edycja" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Edycja" Click="BT_Edycja_Click"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Usuń" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Usuń" Click="BT_Usun_Click"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Orientation="Horizontal">
+                        <Button 
+                        Width="100" 
+                        Margin="10" 
+                        FontSize="20" 
+                        Click="BT_Restet_Click">Reset</Button>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+
+        </Grid>
     </Grid>
 </Page>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZapisDanychDoPliku.Models
 {
-    class UczenDTO
+    public class UczenDTO
     {
         public int Id { get; set; }
         public string Imie { get; set; }

@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZapisDanychDoPliku.Data;
 using ZapisDanychDoPliku.Models;
 using ZapisDanychDoPliku.Services;
 using ZapisDanychDoPliku.View;
@@ -25,23 +26,26 @@ namespace ZapisDanychDoPliku
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {        
+    {
+     
+        private readonly DaneContext daneContext;
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            daneContext = new DaneContext();
         }
 
      
 
         private void BT_ZmienWidokOsoby(object sender, RoutedEventArgs e)
         {
-            var nowaStrona = new OsobaPage();
+            var nowaStrona = new OsobaPage(new OsobaService(daneContext));
             Okno.Content = nowaStrona.Content;
         }
 
         private void BT_ZmienWidokUczniowie(object sender, RoutedEventArgs e)
         {
-            var nowaStrona = new UczenPage();
+            var nowaStrona = new UczenPage(new UczenService(daneContext));
             Okno.Content = nowaStrona.Content;
         }
     }

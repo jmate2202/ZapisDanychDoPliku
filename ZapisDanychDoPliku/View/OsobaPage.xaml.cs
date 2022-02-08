@@ -16,10 +16,10 @@ namespace ZapisDanychDoPliku.View
     public partial class OsobaPage : Page
     {
         private readonly IOsobaService _osobaService;
-        public OsobaPage()
+        public OsobaPage(IOsobaService osobaService)
         {
             InitializeComponent();
-            _osobaService = new OsobaService();
+            _osobaService = osobaService;
             ZaladujDane();
         }
         private void BT_Dodaj_Click(object sender, RoutedEventArgs e)
@@ -99,6 +99,7 @@ namespace ZapisDanychDoPliku.View
             TB_ImieNazwisko.Text = osoba.ImieNazwisko;
             TB_Wiek.Text = osoba.Wiek.ToString();
             BT_Akcja.Content = "Edytuj";
+            L_NazwaAkcji.Content = "Edytuj";
             BT_Akcja.Click -= BT_Dodaj_Click;
             BT_Akcja.Click += EdytujDoPliku;
         }
@@ -111,6 +112,7 @@ namespace ZapisDanychDoPliku.View
             ZaladujDane();
             WyczcyscFormularz();
             BT_Akcja.Content = "Dodaj";
+            L_NazwaAkcji.Content = "Dodaj";
             BT_Akcja.Click -= EdytujDoPliku;
             BT_Akcja.Click += BT_Dodaj_Click;
 

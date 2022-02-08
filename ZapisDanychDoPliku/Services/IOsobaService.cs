@@ -7,7 +7,7 @@ using ZapisDanychDoPliku.Models;
 
 namespace ZapisDanychDoPliku.Services
 {
-    interface IOsobaService
+    public interface IOsobaService
     {
         List<OsobaDTO> GetOsoby();
         void StworzOsobe(OsobaDTO osobaDTO);

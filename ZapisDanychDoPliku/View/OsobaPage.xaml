@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:ZapisDanychDoPliku.View"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
-      Title="OsobaPage">
+      Title="Osoby">
 
     <Grid Background="Black">
         <Label Foreground="White" 
@@ -18,7 +18,9 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Margin="10">
-            <Label Foreground="White" 
+            <Label 
+               x:Name="L_NazwaAkcji"
+               Foreground="White" 
                FontSize="30" 
                HorizontalAlignment="Center">Dodaj</Label>
             <StackPanel VerticalAlignment="Center" 

@@ -13,37 +13,37 @@ namespace ZapisDanychDoPliku.Services
         private readonly DaneContext _daneContext;
         private  int _id;
 
-        public OsobaService()
+        public OsobaService(DaneContext daneContext)
         {
-            _daneContext = new DaneContext("dane1.txt");
-            _id = GetId();
+            _daneContext = daneContext;
+            _id = GetId();            
         }
 
         public bool AktualizujOsobe(int id, OsobaDTO osobaDTO)
         {
-            var osoba = _daneContext.Osoby.FirstOrDefault(x => x.Id == id);
+            var osoba = _daneContext.Osoby.Dane.FirstOrDefault(x => x.Id == id);
             if (osoba == null) return false;
             osobaDTO.Id = osoba.Id;
-            _daneContext.Osoby.Remove(osoba);
-            _daneContext.Osoby.Add(osobaDTO);
-            _daneContext.ZapiszZmiany();
+            _daneContext.Osoby.Dane.Remove(osoba);
+            _daneContext.Osoby.Dane.Add(osobaDTO);
+            _daneContext.Osoby.ZapiszZmiany();
             return true;
         }
 
         public OsobaDTO GetOsoba(int id)
         {
-            var osoba = _daneContext.Osoby.FirstOrDefault(x => x.Id == id);
+            var osoba = _daneContext.Osoby.Dane.FirstOrDefault(x => x.Id == id);
             return osoba;
         }
 
         public List<OsobaDTO> GetOsoby()
         {
-            return _daneContext.Osoby;
+            return _daneContext.Osoby.Dane;
         }
 
         public void ResetDanych()
         {
-            _daneContext.Osoby.Clear();
+            _daneContext.Osoby.Dane.Clear();
             List<OsobaDTO> osoby = new List<OsobaDTO>()
             {
                 new OsobaDTO()
@@ -85,23 +85,23 @@ namespace ZapisDanychDoPliku.Services
         {
           
             osoba.Id = _id++;
-            _daneContext.Osoby.Add(osoba);
-            _daneContext.ZapiszZmiany();
+            _daneContext.Osoby.Dane.Add(osoba);
+            _daneContext.Osoby.ZapiszZmiany();
         }
 
         public bool UsunOsobe(int id)
         {
-            var osoba = _daneContext.Osoby.FirstOrDefault(x => x.Id == id);
+            var osoba = _daneContext.Osoby.Dane.FirstOrDefault(x => x.Id == id);
             if (osoba == null) return false;
-            _daneContext.Osoby.Remove(osoba);
-            _daneContext.ZapiszZmiany();
+            _daneContext.Osoby.Dane.Remove(osoba);
+            _daneContext.Osoby.ZapiszZmiany();
             return true;
         }
     
         private int GetId()
         {
-            if (_daneContext.Osoby.Count == 0) return 0;
-            else return _daneContext.Osoby.Last().Id+1;
+            if (_daneContext.Osoby.Dane.Count == 0) return 0;
+            else return _daneContext.Osoby.Dane.Last().Id+1;
         }
     
     
