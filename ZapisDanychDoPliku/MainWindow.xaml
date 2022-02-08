@@ -22,6 +22,12 @@
                 Width="100"
                 FontSize="20"
                 Click="BT_ZmienWidokOsoby"></Button>
+            <Button Content="Prowadzenie lekcji"                 
+                Height="80"
+                Margin="10"
+                Width="200"
+                FontSize="20"
+                Click="BT_ZmienWidokLekcja"></Button>
         </StackPanel>
      
     </Grid>    
